@@ -18,34 +18,34 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/FisrtName"
+        android:id="@+id/Name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="31dp"
         android:layout_marginTop="37dp"
-        android:text="TextView"
+        android:text="@string/person_name_placeholder"
         app:layout_constraintStart_toEndOf="@+id/PersonImage"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/LastName"
+        android:id="@+id/LendedAmount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="31dp"
         android:layout_marginTop="30dp"
-        android:text="TextView"
+        android:text="@string/amount_placeholder"
         app:layout_constraintStart_toEndOf="@+id/PersonImage"
-        app:layout_constraintTop_toBottomOf="@+id/FisrtName" />
+        app:layout_constraintTop_toBottomOf="@+id/Name" />
 
     <TextView
-        android:id="@+id/Email"
+        android:id="@+id/Date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="31dp"
         android:layout_marginTop="30dp"
         android:layout_marginBottom="30dp"
-        android:text="TextView"
+        android:text="@string/date_placeholder"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/PersonImage"
-        app:layout_constraintTop_toBottomOf="@+id/LastName" />
+        app:layout_constraintTop_toBottomOf="@+id/LendedAmount" />
 </androidx.constraintlayout.widget.ConstraintLayout>

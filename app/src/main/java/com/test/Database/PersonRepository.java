@@ -1,4 +1,4 @@
-package com.spotify.test.Database;
+package com.test.Database;
 
 import android.content.Context;
 
@@ -8,8 +8,8 @@ import java.util.List;
 
 public class PersonRepository {
 
-    private PersonDetailsDao dao;
-    private LiveData<List<PersonDetails>> detailsList;
+    private LendersDetailDao dao;
+    private LiveData<List<LendersDetail>> detailsList;
 
     public PersonRepository(final Context context){
 
@@ -19,19 +19,19 @@ public class PersonRepository {
 
     }
 
-    public LiveData<List<PersonDetails>> getDetailsList(){
+    public LiveData<List<LendersDetail>> getDetailsList(){
         return detailsList;
     }
 
-    public void AddPerson(PersonDetails details){
+    public void AddPerson(LendersDetail details){
         dao.AddPerson(details);
     }
 
-    public void RemovePerson(PersonDetails details){
+    public void RemovePerson(LendersDetail details){
         dao.RemovePerson(details);
     }
 
-    public void UpdatePerson(PersonDetails details){
+    public void UpdatePerson(LendersDetail details){
         dao.UpdatePerson(details);
     }
 

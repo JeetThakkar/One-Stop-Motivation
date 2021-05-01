@@ -1,4 +1,4 @@
-package com.spotify.test;
+package com.test;
 
 import android.app.Application;
 
@@ -6,15 +6,15 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.spotify.test.Database.PersonDetails;
-import com.spotify.test.Database.PersonRepository;
+import com.test.Database.LendersDetail;
+import com.test.Database.PersonRepository;
 
 import java.util.List;
 
 public class PersonViewModel extends AndroidViewModel {
 
     private PersonRepository repository;
-    private LiveData<List<PersonDetails>> detailsList;
+    private LiveData<List<LendersDetail>> detailsList;
 
     public PersonViewModel(@NonNull Application application) {
         super(application);
@@ -22,19 +22,19 @@ public class PersonViewModel extends AndroidViewModel {
         detailsList = repository.getDetailsList();
     }
 
-    public LiveData<List<PersonDetails>> getDetailsList(){
+    public LiveData<List<LendersDetail>> getDetailsList(){
         return detailsList;
     }
 
-    public void AddPerson(PersonDetails details){
+    public void AddPerson(LendersDetail details){
         repository.AddPerson(details);
     }
 
-    public void RemovePerson(PersonDetails details){
+    public void RemovePerson(LendersDetail details){
         repository.RemovePerson(details);
     }
 
-    public void UpdatePerson(PersonDetails details){
+    public void UpdatePerson(LendersDetail details){
         repository.UpdatePerson(details);
     }
 

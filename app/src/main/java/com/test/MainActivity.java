@@ -1,21 +1,33 @@
-package com.spotify.test;
+package com.test;
 
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+
+import com.spotify.test.R;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import static java.text.DateFormat.getDateInstance;
+import static java.text.DateFormat.getTimeInstance;
 
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView nameList;
     DetailsAdapter listAdatper;
     PersonViewModel viewModel;
+    TextView dnt;
+
+    public static final String COMMA = ",";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +38,13 @@ public class MainActivity extends AppCompatActivity {
         listAdatper = new DetailsAdapter();
         nameList.setAdapter(listAdatper);
         viewModel = new ViewModelProvider(this).get(PersonViewModel.class);
-        viewModel.getDetailsList().observe(this, list ->{
-            listAdatper.submitList(list);
-        });
+        viewModel.getDetailsList().observe(this, list -> listAdatper.submitList(list));
+        dnt = findViewById(R.id.datetime);
+        DateFormat dt = getDateInstance();;
+        DateFormat tm = getTimeInstance();
+        String time = tm.format(new Date()) + "  " + dt.format(new Date());
+        dnt.setText(time);
+
     }
 
     @Override
