@@ -73,9 +73,6 @@ public class AddNewLender extends AppCompatActivity
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if(s.length()==1)
-//                    Toast.makeText(AddNewLender.this, "Lenght " + s.length(), Toast.LENGTH_SHORT).show();
-
                 if (s.length() == 1 && !t.contains(s)) {
                     t += s;
                     runOnUiThread(() -> queryBox.setAdapter(null));
