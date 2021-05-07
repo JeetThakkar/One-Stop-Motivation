@@ -50,6 +50,10 @@ public class LendersDetail {
         return PaymentHistory;
     }
 
+    public void setPaymentHistory(String newHistory) {
+        this.PaymentHistory=newHistory;
+    }
+
     public Boolean getStatus() {
         return status;
     }

@@ -12,4 +12,14 @@
     <string name="person_name_placeholder">Person Name</string>
     <string name="amount_placeholder">Amount Lended</string>
     <string name="date_placeholder">Date of Lending</string>
+    <string name="title_activity_lender_info">LenderInfo</string>
+    <string name="name">Name</string>
+    <string name="amount_lended">Amount Lended</string>
+    <string name="date_of_lending">Date Of Lending</string>
+    <string name="payment_amount_due">Payment Amount Due</string>
+    <string name="payment_status">Payment Status</string>
+    <string name="image_of_lender">Image Of Lender</string>
+    <string name="error_id_not_found">Sorry Cannot find details of person</string>
+    <string name="interest_paid_button">Interest Paid</string>
+    <string name="payment_history_tv">Payment History</string>
 </resources>

@@ -15,6 +15,9 @@ public interface LendersDetailDao {
     @Query("SELECT * FROM LendersDetail")
     LiveData<List<LendersDetail>> getPersons();
 
+    @Query("SELECT * FROM LendersDetail WHERE Id = :lenderId")
+    LiveData<LendersDetail> getLenderById(int lenderId);
+
     @Insert
     void AddPerson(LendersDetail details);
 

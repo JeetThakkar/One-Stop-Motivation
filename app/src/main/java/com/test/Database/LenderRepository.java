@@ -6,12 +6,12 @@ import androidx.lifecycle.LiveData;
 
 import java.util.List;
 
-public class PersonRepository {
+public class LenderRepository {
 
     private LendersDetailDao dao;
     private LiveData<List<LendersDetail>> detailsList;
 
-    public PersonRepository(final Context context){
+    public LenderRepository(final Context context){
 
         AppDatabase database = AppDatabase.getInstance(context);
         dao = database.dao();
@@ -33,6 +33,10 @@ public class PersonRepository {
 
     public void UpdatePerson(LendersDetail details){
         dao.UpdatePerson(details);
+    }
+
+    public LiveData<LendersDetail> getLenderById(int id){
+        return dao.getLenderById(id);
     }
 
 }

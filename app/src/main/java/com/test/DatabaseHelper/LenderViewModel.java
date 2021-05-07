@@ -1,4 +1,4 @@
-package com.test;
+package com.test.DatabaseHelper;
 
 import android.app.Application;
 
@@ -7,18 +7,18 @@ import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.test.Database.LendersDetail;
-import com.test.Database.PersonRepository;
+import com.test.Database.LenderRepository;
 
 import java.util.List;
 
-public class PersonViewModel extends AndroidViewModel {
+public class LenderViewModel extends AndroidViewModel {
 
-    private PersonRepository repository;
+    private LenderRepository repository;
     private LiveData<List<LendersDetail>> detailsList;
 
-    public PersonViewModel(@NonNull Application application) {
+    public LenderViewModel(@NonNull Application application) {
         super(application);
-        repository = new PersonRepository(application);
+        repository = new LenderRepository(application);
         detailsList = repository.getDetailsList();
     }
 
@@ -36,6 +36,10 @@ public class PersonViewModel extends AndroidViewModel {
 
     public void UpdatePerson(LendersDetail details){
         repository.UpdatePerson(details);
+    }
+
+    public LiveData<LendersDetail> getLenderById(int id){
+        return repository.getLenderById(id);
     }
 
 }
