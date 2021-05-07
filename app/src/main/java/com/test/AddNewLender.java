@@ -5,7 +5,6 @@ import android.app.LoaderManager;
 import android.content.ContentResolver;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.ContactsContract;
 import android.text.Editable;
@@ -22,36 +21,25 @@ import androidx.core.content.ContextCompat;
 
 import com.spotify.test.R;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
+import java.util.Objects;
 
 
 public class AddNewLender extends AppCompatActivity
         implements AdapterView.OnItemClickListener, AdapterView.OnItemSelectedListener {
 
-    public static final String[] FROM_COL = {
-            ContactsContract.Contacts.DISPLAY_NAME
-    };
-    public static final int[] TO_IDS = {
-            R.id.ContactName
-    };
     public static final String[] PROJECTION = {
             ContactsContract.Contacts._ID,
             ContactsContract.Contacts.LOOKUP_KEY,
             ContactsContract.Contacts.DISPLAY_NAME_PRIMARY,
             ContactsContract.Contacts.HAS_PHONE_NUMBER
     };
-    public static final int CONTACT_ID_INDEX = 0;
-    public static final int CONTACT_KEY_INDEX = 1;
     public static final String SELECTION = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " LIKE ?";
 
     String t = "";
 
-    //    ListView contactList;
-    String contactKey;
-    Uri contactUri;
-    long contactId;
-    public String searchString;
-    public String[] selectionArgs = {null};
     private ArrayAdapter<String> contactAdapter;
     private AutoCompleteTextView queryBox;
     private ArrayList<String> contactNameList = new ArrayList<>();
@@ -88,9 +76,9 @@ public class AddNewLender extends AppCompatActivity
 //                if(s.length()==1)
 //                    Toast.makeText(AddNewLender.this, "Lenght " + s.length(), Toast.LENGTH_SHORT).show();
 
-                if(s.length()==1 && !t.contains(s)){
+                if (s.length() == 1 && !t.contains(s)) {
                     t += s;
-                    runOnUiThread(()->queryBox.setAdapter(null));
+                    runOnUiThread(() -> queryBox.setAdapter(null));
                     new Thread(() -> {
                         readContacts(s.toString());
                         runOnUiThread(() -> {
@@ -113,44 +101,49 @@ public class AddNewLender extends AppCompatActivity
     private void readContacts(String str) {
         String phoneNumber;
         ContentResolver cr = getBaseContext().getContentResolver();
-        Cursor readContentCursor = cr.query(ContactsContract.Contacts.CONTENT_URI,
-                PROJECTION,
-                SELECTION,
-                new String[]{str+"%"},
-                null);
-        runOnUiThread(() -> Toast.makeText(this, "Length " + readContentCursor.getCount(), Toast.LENGTH_SHORT).show());
-        if (readContentCursor.getCount() > 0) {
-            while (readContentCursor.moveToNext()) {
-                String id = readContentCursor.getString(
-                        readContentCursor.getColumnIndex(ContactsContract.Contacts._ID));
-                String name = readContentCursor.getString(
-                        readContentCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY));
+        try {
 
-                if (Integer.parseInt(
-                        readContentCursor.getString(
-                                readContentCursor.getColumnIndex(
-                                        ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
-                    Cursor phonenocursor = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
-                            null,
-                            ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
-                            new String[]{id},
-                            null);
-                    int j = 0;
-                    while (phonenocursor.moveToNext()) {
-                        if (j == 0) {
-                            phoneNumber = "" + phonenocursor.getString(
-                                    phonenocursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
-                            contactAdapter.add(name);
-                            contactNameList.add(name);
-                            contactNumberList.add(phoneNumber);
-                            j++;
+            Cursor readContentCursor = cr.query(ContactsContract.Contacts.CONTENT_URI,
+                    PROJECTION,
+                    SELECTION,
+                    new String[]{str + "%"},
+                    null);
+            runOnUiThread(() -> Toast.makeText(this, "Length " + Objects.requireNonNull(readContentCursor).getCount(), Toast.LENGTH_SHORT).show());
+            if (Objects.requireNonNull(readContentCursor).getCount() > 0) {
+                while (readContentCursor.moveToNext()) {
+                    String id = readContentCursor.getString(
+                            readContentCursor.getColumnIndex(ContactsContract.Contacts._ID));
+                    String name = readContentCursor.getString(
+                            readContentCursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME_PRIMARY));
+
+                    if (Integer.parseInt(
+                            readContentCursor.getString(
+                                    readContentCursor.getColumnIndex(
+                                            ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
+                        Cursor phonenocursor = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                                null,
+                                ContactsContract.CommonDataKinds.Phone.CONTACT_ID + " = ?",
+                                new String[]{id},
+                                null);
+                        int j = 0;
+                        while (Objects.requireNonNull(phonenocursor).moveToNext()) {
+                            if (j == 0) {
+                                phoneNumber = "" + phonenocursor.getString(
+                                        phonenocursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                                contactAdapter.add(name);
+                                contactNameList.add(name);
+                                contactNumberList.add(phoneNumber);
+                                j++;
+                            }
                         }
+                        phonenocursor.close();
                     }
-                    phonenocursor.close();
                 }
             }
+            readContentCursor.close();
+        }catch (Exception e){
+            e.printStackTrace();
         }
-        readContentCursor.close();
     }
 
 
@@ -160,13 +153,12 @@ public class AddNewLender extends AppCompatActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case 0:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
-                    onCreate(null);
-                else if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
-                    requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS}, 0);
+    public void onRequestPermissionsResult(int requestCode,@NotNull String[] permissions,@NotNull int[] grantResults) {
+        if (requestCode == 0) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)
+                onCreate(null);
+            else if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED)
+                requestPermissions(new String[]{Manifest.permission.WRITE_CONTACTS}, 0);
         }
     }
 
